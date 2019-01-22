@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('authors', 'AuthorController');
+Route::apiResource('publishers', 'PublisherController');
+Route::apiResource('books', 'BookController');
