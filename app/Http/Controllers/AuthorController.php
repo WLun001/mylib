@@ -68,6 +68,9 @@ class AuthorController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {
