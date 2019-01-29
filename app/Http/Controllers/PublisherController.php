@@ -15,7 +15,7 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        return new PublisherCollection(Publisher::all());
+        return new PublisherCollection(Publisher::paginate(5));
     }
 
     /**
