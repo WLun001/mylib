@@ -23,6 +23,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $book = Book::create($request->all());
+        $book->authors()->sync($request->authors);
         return response()->json([
             'id' => $book->id,
             'created_at' => $book->created_at,
@@ -36,7 +37,7 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::find($id);
+        $book = Book::with("authors")->find($id);
         if (!$book) {
             return response()->json([
                 'error' => 404,
