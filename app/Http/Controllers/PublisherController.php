@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PublisherCollection;
 use App\Http\Resources\PublisherResource;
 use App\Publisher;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        return Publisher::all();
+        return new PublisherCollection(Publisher::all());
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Resources\BookCollection;
+use App\Http\Resources\BookResource;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -12,7 +14,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        return Book::all();
+        return new BookCollection(Book::all());
     }
 
     /**
@@ -33,18 +35,18 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      * @param $id
-     * @return Book|Book[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|null
+     * @return BookResource|\Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        $book = Book::with("authors")->find($id);
+        $book = Book::with('authors')->find($id);
         if (!$book) {
             return response()->json([
                 'error' => 404,
                 'message' => 'Not found',
             ], 404);
         }
-        return $book;
+        return new BookResource($book);
     }
 
     /**
