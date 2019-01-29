@@ -63,6 +63,7 @@ class BookController extends Controller
             ], 404);
         }
         $book->update($request->all());
+        $book->authors()->sync($request->authors);
         return response()->json(null, 204);
     }
 
