@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PublisherResource;
 use App\Publisher;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,7 @@ class PublisherController extends Controller
     /**
      * Display the specified resource.
      * @param $id
-     * @return Book|Book[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|null
+     * @return PublisherResource|\Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -44,7 +45,7 @@ class PublisherController extends Controller
                 'message' => 'Not found',
             ], 404);
         }
-        return $publisher;
+        return new PublisherResource($publisher);
     }
 
     /**
