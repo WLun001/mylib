@@ -39,7 +39,7 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::with('authors')->find($id);
+        $book = Book::with('authors')->with('publisher')->find($id);
         if (!$book) {
             return response()->json([
                 'error' => 404,
