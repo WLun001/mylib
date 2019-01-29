@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Author;
+use App\Http\Resources\AuthorResource;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
@@ -32,7 +33,7 @@ class AuthorController extends Controller
     /**
      * Display the specified resource.
      * @param $id
-     * @return Author|Author[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse|null
+     * @return AuthorResource|\Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -43,7 +44,7 @@ class AuthorController extends Controller
                 'message' => 'Not found',
             ], 404);
         }
-        return $author;
+        return new AuthorResource($author);
     }
 
     /**
