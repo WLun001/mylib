@@ -11,10 +11,29 @@ class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @param Request $request
+     * @return BookCollection
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new BookCollection(Book::paginate(5));
+        $isbn = $request->input('isbn');
+        $title = $request->input('title');
+        $publisher = $request->input('publisher');
+
+        $books = Book::with(['authors', 'publisher'])
+            ->when($isbn, function ($query) use ($isbn) {
+                return $query->where('isbn', $isbn);
+            })
+            ->when($title, function ($query) use ($title) {
+                return $query->where('title', 'like', "%$title%");
+            })
+//            ->when($publisher, function ($query) use ($publisher) {
+//                return $query->where('publisher.name', 'like', "%$publisher%");
+//            })
+            ->get();
+
+        return new BookCollection($books);
+        // return new BookCollection(Book::paginate(5));
     }
 
     /**

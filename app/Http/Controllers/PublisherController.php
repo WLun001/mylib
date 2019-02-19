@@ -13,9 +13,16 @@ class PublisherController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new PublisherCollection(Publisher::paginate(5));
+        $name = $request->input('name');
+
+        $publisher = Publisher::with('books')
+            ->when($name, function ($query) use ($name) {
+                return $query->where('name', 'like', "%$name%");
+            })
+            ->get();
+        return new PublisherCollection($publisher);
     }
 
     /**

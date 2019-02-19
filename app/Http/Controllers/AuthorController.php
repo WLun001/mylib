@@ -12,9 +12,16 @@ class AuthorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new AuthorCollection(Author::with('books')->paginate(5));
+        $name = $request->input('name');
+
+        $author = Author::with('books')
+            ->when($name, function ($query) use ($name) {
+                return $query->where('name', 'like', "%$name%");
+            })
+            ->get();
+        return new AuthorCollection($author);
     }
 
     /**
