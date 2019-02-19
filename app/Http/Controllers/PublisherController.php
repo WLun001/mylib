@@ -39,7 +39,7 @@ class PublisherController extends Controller
      */
     public function show($id)
     {
-        $publisher = Publisher::find($id);
+        $publisher = Publisher::with('books')->find($id);
         if (!$publisher) {
             return response()->json([
                 'error' => 404,

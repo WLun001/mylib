@@ -1,5 +1,6 @@
 <?php
 
+use App\Book;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,4 +14,14 @@
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/test', function () {
+    $book = Book::withCount([
+        'authors',
+        'authors as authors_count' => function ($query) {
+            $query->where('name', 'TWC');
+        }
+    ])->get();
+    return $book;
 });

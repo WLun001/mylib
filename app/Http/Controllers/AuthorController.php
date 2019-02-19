@@ -14,7 +14,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return new AuthorCollection(Author::paginate(5));
+        return new AuthorCollection(Author::with('books')->paginate(5));
     }
 
     /**
@@ -38,7 +38,7 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $author = Author::find($id);
+        $author = Author::with('books')->find($id);
         if (!$author) {
             return response()->json([
                 'error' => 404,

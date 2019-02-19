@@ -17,6 +17,7 @@ class PublisherResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => mb_strtoupper($this->name),
+            'books' => new BookCollection($this->whenLoaded('books')),
         ];
     }
 }
