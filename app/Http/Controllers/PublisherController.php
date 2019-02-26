@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PublisherCollection;
 use App\Http\Resources\PublisherResource;
 use App\Publisher;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 
 class PublisherController extends Controller
@@ -12,6 +13,8 @@ class PublisherController extends Controller
 
     /**
      * Display a listing of the resource.
+     * @param Request $request
+     * @return PublisherCollection
      */
     public function index(Request $request)
     {
@@ -21,7 +24,7 @@ class PublisherController extends Controller
             ->when($name, function ($query) use ($name) {
                 return $query->where('name', 'like', "%$name%");
             })
-            ->get();
+            ->paginate(5);
         return new PublisherCollection($publisher);
     }
 
@@ -32,11 +35,21 @@ class PublisherController extends Controller
      */
     public function store(Request $request)
     {
-        $publisher = Publisher::create($request->all());
-        return response()->json([
-            'id' => $publisher->id,
-            'created_at' => $publisher->created_at,
-        ], 201);
+        try {
+            $request->validate([
+                'name' => 'required|max:100'
+            ]);
+            $publisher = Publisher::create($request->all());
+            return response()->json([
+                'id' => $publisher->id,
+                'created_at' => $publisher->created_at,
+            ], 201);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'errors' => $exception->errors(),
+            ], 422);
+        }
+
     }
 
     /**

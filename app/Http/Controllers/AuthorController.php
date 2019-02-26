@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Author;
 use App\Http\Resources\AuthorCollection;
 use App\Http\Resources\AuthorResource;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @param Request $request
+     * @return AuthorCollection
      */
     public function index(Request $request)
     {
@@ -31,11 +34,21 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        $author = Author::create($request->all());
-        return response()->json([
-            'id' => $author->id,
-            'created_at' => $author->created_at,
-        ], 201);
+        try {
+            $request->validate([
+                'name' => 'required|max:150'
+            ]);
+            $author = Author::create($request->all());
+            return response()->json([
+                'id' => $author->id,
+                'created_at' => $author->created_at,
+            ], 201);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'errors' => $exception->errors()
+            ]);
+        }
+
     }
 
     /**
