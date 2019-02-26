@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\IsbnRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SaveBookRequest extends FormRequest
@@ -24,7 +25,7 @@ class SaveBookRequest extends FormRequest
     public function rules()
     {
         return [
-            'isbn' => ['required', 'unique:books', 'regex:/^(97(8|9))?\d{9}(\d|X)$/'],
+            'isbn' => ['required', 'unique:books', new IsbnRule],
             'title' => 'required|max:200',
             'year' => 'required|integer'
         ];
