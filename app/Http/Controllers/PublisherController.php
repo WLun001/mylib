@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SavePublisherRequest;
 use App\Http\Resources\PublisherCollection;
 use App\Http\Resources\PublisherResource;
 use App\Publisher;
@@ -33,12 +34,9 @@ class PublisherController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(SavePublisherRequest $request)
     {
         try {
-            $request->validate([
-                'name' => 'required|max:100'
-            ]);
             $publisher = Publisher::create($request->all());
             return response()->json([
                 'id' => $publisher->id,

@@ -35,9 +35,6 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
-                'name' => 'required|max:150'
-            ]);
             $author = Author::create($request->all());
             return response()->json([
                 'id' => $author->id,

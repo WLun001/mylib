@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Requests\SaveBookRequest;
 use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class BookController extends Controller
 {
@@ -38,17 +40,25 @@ class BookController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param SaveBookRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(SaveBookRequest $request)
     {
-        $book = Book::create($request->all());
-        $book->authors()->sync($request->authors);
-        return response()->json([
-            'id' => $book->id,
-            'created_at' => $book->created_at,
-        ], 201);
+        try {
+            $book = Book::create($request->all());
+            $book->authors()->sync($request->authors);
+            return response()->json([
+                'id' => $book->id,
+                'created_at' => $book->created_at,
+            ], 201);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'errors' => $exception->errors(),
+            ]);
+        }
+
+
     }
 
     /**
