@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 
-class SavePublisherRequest extends FormRequest
+class SavePublisherRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
