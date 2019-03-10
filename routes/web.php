@@ -25,3 +25,5 @@ Route::get('/test', function () {
     ])->get();
     return $book;
 });
+
+Route::get('/books', 'WebController@books');
