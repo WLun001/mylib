@@ -61331,8 +61331,10 @@ var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/reac
 var react_dom_1 = __importDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
 var Book = /** @class */ (function (_super) {
     __extends(Book, _super);
-    function Book() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function Book(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {};
+        return _this;
     }
     Book.prototype.componentDidMount = function () {
         var url = 'api/books';
@@ -61341,7 +61343,12 @@ var Book = /** @class */ (function (_super) {
                 Accept: 'application/json'
             },
             credentials: 'same-origin'
-        }).then(function (response) { return console.log(response.json()); });
+        }).then(function (response) {
+            if (!response.ok) {
+                throw Error([response.status, response.statusText].join(' '));
+            }
+            return response.json();
+        }).then(function (json) { return console.log(json.data); });
     };
     Book.prototype.render = function () {
         return (react_1.default.createElement("div", { className: "container" },
