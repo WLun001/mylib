@@ -1,32 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-
-interface Authors {
-  data: Author[];
-}
-
-interface Author {
-  id: number;
-  name: string;
-}
-
-interface Publisher {
-  id: number;
-  name: string;
-}
-
-export interface BookType {
-  id?: number;
-  isbn?: string;
-  title?: string;
-  year?: number;
-  authors?: Authors;
-  publisher?: Publisher;
-}
-
-export interface BookData {
-  data: BookType[];
-}
+import {BookData} from './types';
 
 export default class Book extends Component<any, BookData> {
 
