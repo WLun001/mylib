@@ -27,3 +27,7 @@ Route::get('/test', function () {
 });
 
 Route::get('/books', 'WebController@books');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
